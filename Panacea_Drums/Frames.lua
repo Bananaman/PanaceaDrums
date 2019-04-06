@@ -20,7 +20,9 @@ function Panacea_Drums:CreateSingleFrame(framename)
 	local Layout = Panacea_Drums.Layout
 
 	local object
-
+	
+	
+	
 	-- Anchor (for Dragging)
 	object = CreateFrame("Button", framename.."Anchor", UIParent)
 	object:SetWidth(framesize)
@@ -74,7 +76,7 @@ function Panacea_Drums:CreateSingleFrame(framename)
 	object:SetBackdropColor(1, 1, 1, 1)
 	object:SetBackdropBorderColor(1, 1, 1, 0)
 	Drum.mainframe = object
-
+	
 	-- Cooldown
 	object = CreateFrame("Cooldown", framename.."Cooldown", Drum.mainframe, "CooldownFrameTemplate")
 	object:ClearAllPoints()
@@ -90,8 +92,8 @@ function Panacea_Drums:CreateSingleFrame(framename)
 	object:SetFont(Layout.settings.fonts.toptext, Layout.settings.fonts.toptextsize or 10, "OUTLINE");
 	object:ClearAllPoints()
 	object:SetTextColor(1, 1, 1, 1)
-	object:SetWidth(framesize*2)
-	object:SetHeight(framesize*2)
+	object:SetWidth(framesize*3)
+	object:SetHeight(framesize*3)
 	object:SetPoint("BOTTOM", Drum.mainframe, "TOP", 0, 0)
 	object:SetJustifyH("CENTER")
 	object:SetJustifyV("BOTTOM")
@@ -115,6 +117,24 @@ function Panacea_Drums:CreateSingleFrame(framename)
 	object:SetShadowColor(0, 0, 0, 1)
 	object:SetShadowOffset(8/10, -8/10)
 	Drum.centertext = object
+	
+	
+	-- Nb items Text
+	object = Drum.mainframe:CreateFontString(framename.."TextCenter", "OVERLAY")
+	object:SetFontObject(GameFontHighlight)
+	object:SetFont(Layout.settings.fonts.bottomtext, Layout.settings.fonts.NbItemtextsize or 8, "OUTLINE")
+	object:ClearAllPoints()
+	object:SetTextColor(1, 1, 1, 1)
+	object:SetWidth(framesize)
+	object:SetHeight(framesize)
+	object:SetPoint("CENTER", Drum.mainframe, "BOTTOM", 10, 5)
+	object:SetJustifyH("CENTER")
+	object:SetJustifyV("MIDDLE")
+	object:SetAlpha(1)
+	object:SetShadowColor(0, 0, 0, 1)
+	object:SetShadowOffset(8/10, -8/10)
+	Drum.NbItemtext = object
+	
 
 	-- Bottom Text
 	object = Drum.mainframe:CreateFontString(framename.."TextBottom", "OVERLAY")
@@ -132,7 +152,8 @@ function Panacea_Drums:CreateSingleFrame(framename)
 	object:SetShadowOffset(8/10, -8/10)
 	Drum.bottomtext = object
 
-
+	Drum.NbItemtext:SetText( GetItemCount(Panacea_Drums:GetDrumWatched(), nil, true))
+	
 	Drum.Lock = function(self)
 		self.anchor:Hide()
 	end
@@ -144,6 +165,17 @@ function Panacea_Drums:CreateSingleFrame(framename)
 	Drum.IsLocked = function(self)
 		return not self.anchor:IsShown()
 	end
+	
+	-- Drum.mainframe = function(self)
+		-- if Panacea_Drums.db.profile.Hide then 
+			-- if GetNumRaidMembers() == 0 and GetNumRaidMembers()== 0 then
+				-- self.mainframe:SetAlpha(0)
+			-- else
+				
+				-- self.mainframe:SetAlpha(1)
+			-- end
+		-- end	
+	-- end
 
 	Drum.SetPoint = function(self, point, relativeTo, relativePoint, xOfs, yOfs)
 		self.anchor:ClearAllPoints()
@@ -208,7 +240,7 @@ function Panacea_Drums:CreateSingleFrame(framename)
 		self.ready = false
 		local duration, cooldown = drums.duration, drums.cooldown
 		local tend = GetTime() + duration
-
+		local whisper=true
 		if drummer == "player" then
 			self.CD = GetTime() + cooldown
 		end
@@ -217,7 +249,7 @@ function Panacea_Drums:CreateSingleFrame(framename)
 		self.mainframe:SetScript("OnUpdate", 
 			function()
 				local dur = tend - GetTime()
-
+				
 				if self.CD then
 					local durcd = self.CD - GetTime()
 
@@ -246,15 +278,22 @@ function Panacea_Drums:CreateSingleFrame(framename)
 						self.faded = true
 					end
 					dur = 0
+					
 				else
 					self.centertext:SetText(floor(dur + 0.5))
+					
 				end
 
 				if dur <= 0 and not self.CD then
 					self.mainframe:SetScript("OnUpdate", nil)
 					return
 				end
-
+				
+				if  floor(dur)==5 and whisper== true then
+					Panacea_Drums:DrumsAlmostFaded(drums, drummer)
+					whisper= false
+				end
+				
 			end
 		)
 	end
@@ -327,6 +366,13 @@ function Panacea_Drums:ResetFrame(Drum)
 	Drum:SetIcon(Panacea_Drums:GetDrumByItemID(self:GetDrumWatched()).texture)
 
 	Drum:LoadPos()
+end
+
+
+function Panacea_Drums:HideFrame()
+	--self.anchor:Hide()
+	self.mainframe:Hide()
+	--self.toptext:Hide()
 end
 
 function Panacea_Drums:GetSingleFrame(framename)

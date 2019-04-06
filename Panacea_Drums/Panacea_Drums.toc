@@ -1,22 +1,22 @@
 ## Interface: 20400
 
-## Title: ccDrums 2.0
+## Title: Panacea Drums
 ## Notes: Raid Drum Timers
-## Author: ccKep
-## Version: 2.0
+## Author: ccKep. Modified by Tsunadee
+## Version: 2.1
 ## X-Category: Raid, Leatherworking
 
 ## OptionalDeps: LibRock-1.0, SharedMedia, ButtonFacade
 ## X-Embeds: LibRock-1.0, LibRockConfig-1.0, LibRockConsole-1.0, LibRockDB-1.0, LibRockEvent-1.0, LibSharedMedia-3.0, LibStub
 
-## SavedVariables: ccDrumsDB
+## SavedVariables: Panacea_DrumsDB
 
 embeds.xml
 
 # Locale-enUS.lua
 # Locale-deDE.lua
 
-ccDrums.lua
+PanaceaDrums.lua
 Options.lua
 
 DrumData.lua

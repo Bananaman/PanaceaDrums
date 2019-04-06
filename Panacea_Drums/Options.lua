@@ -12,6 +12,11 @@ local localization = (GetLocale() == "deDE") and {
 } or {}
 
 local L = Panacea_Drums:L("Panacea_Drums-Options", localization)
+local DescriptionText = "Hello This is a description"
+-- function ClearRotation()
+-- Panacea_Drums:ResetRotationTable()
+-- end
+
 
 Panacea_Drums.options = {
 	type = "group",
@@ -93,7 +98,7 @@ Panacea_Drums.options = {
 		},
 		announce = {
 			type = "boolean",
-			name = L["Announce Drums"],
+			name = L["Announce in Party"],
 			desc = L["Announces your drums in Party Chat"],
 			order = 4,
 			get = function()
@@ -103,11 +108,36 @@ Panacea_Drums.options = {
 				Panacea_Drums.db.profile.announceparty = value
 			end,
 		},
+		whisper = {
+			type = "boolean",
+			name = L["Whisper Next Drummer"],
+			desc = L["Whispers the next one to Drum on the list"],
+			order = 5,
+			get = function()
+				return Panacea_Drums.db.profile.whisper
+			end,
+			set = function(value)
+				Panacea_Drums.db.profile.whisper = value
+			end,
+		},
+		-- cvz added
+		Sound = {
+			type = "boolean",
+			name = L["Play Sound"],
+			desc = L["Play a sound when it's your turn to drum"],
+			order = 6,
+			get = function()
+				return Panacea_Drums.db.profile.Sound
+			end,  
+			set = function(value)
+				Panacea_Drums.db.profile.Sound = value
+			end,
+		},
 		screenflash = {
 			type = "boolean",
 			name = L["Screen Flash"],
 			desc = L["Activates the Screen Flash feature when your drum cooldown is ready"],
-			order = 5,
+			order = 7,
 			get = function()
 				return Panacea_Drums.db.profile.screenflash
 			end,
@@ -115,6 +145,34 @@ Panacea_Drums.options = {
 				Panacea_Drums.db.profile.screenflash = value
 			end,
 		},
+		
+		AlphawhenGrouped = {
+			type = "boolean",
+			name = L["Hide When Not in Party/Raid"],
+			desc = L["Hide the frame when not in a party"],
+			order = 8,
+			get = function()
+				return Panacea_Drums.db.profile.Hide
+			end,
+			set = function(value)
+				Panacea_Drums.db.profile.Hide = value
+			end,
+		},
+		
+		
+		Clear = {
+			type = 'execute',
+			rder = 9,
+			name = L["Clear Rotation Text"],
+			desc = L["Clear the current rotation table"],									
+			buttonText = L["Clear"],
+			func = function()
+				Panacea_Drums:ResetRotationTable()
+			end,
+		},
+			
+		
+		
 		appearance = {
 			type = "group",
 			name = L["Look'n'Feel"],
@@ -299,12 +357,66 @@ Panacea_Drums.options = {
 						},
 					},
 				},
+				NbItemtext = {
+					type = "group",
+					name = L["Charges Text Font"],
+					desc = L["Defines the font used in the Charges Text."],
+					groupType = "inline",
+					order = 5,
+					args = {
+						fontsize = {
+								name = L["Size"],
+								desc = L["Font size."],
+								type = 'number',
+								order = 1,
+								get = function()
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
+									return settings.fonts.NbItemtextsize
+								end,
+								set = function(value)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
+									settings.fonts.NbItemtextsize = value
+									for k, v in pairs(Panacea_Drums.frames) do
+										v.NbItemtext:SetFont(settings.fonts.NbItemtext, value, "OUTLINE");
+									end
+								end,
+								min = 8,
+								max = 32,
+								step = 1,
+						},
+						fonttype = {
+							type = "choice",
+							name = L["Type"],
+							desc = L["What font to use."],
+							order = 2,
+							get = function()
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
+								for k, v in pairs(SharedMedia:HashTable("font")) do
+									if v == settings.fonts.NbItemtext then
+										return k
+									end
+								end
+								return settings.fonts.NbItemtext
+							end,
+							set = function(v)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
+								settings.fonts.NbItemtext = SharedMedia:Fetch("font", v)
+								for k, v in pairs(Panacea_Drums.frames) do
+									v.NbItemtext:SetFont(settings.fonts.NbItemtext, settings.fonts.NbItemtextsize, "OUTLINE");
+								end
+							end,
+							choices = SharedMedia:List("font"),
+							choiceFonts = SharedMedia:HashTable("font"),
+						},
+					},
+				},
+				
 				screenflash = {
 					type = "group",
 					name = L["Screen Flash"],
 					desc = L["Behaviour of the Screen Flash"],
 					groupType = "inline",
-					order = 5,
+					order = 6,
 					args = {
 						flashsize = {
 								name = L["Size"],
