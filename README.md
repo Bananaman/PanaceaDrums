@@ -22,7 +22,9 @@ Requires World of Warcraft - The Burning Crusade! (TBC 2.4.6)
 
 ### Slash Command:
 
-`/ccd` (stands for "ccDrums") to bring up a configuration GUI.
+`/ccd` (stands for "ccDrums") to bring up a configuration GUI, where you can set up things like the audio/whisper notifications, and so on...
+
+_Tip: The most important setting for most people will be to uncheck the "Lock Drums" checkbox to move the drums icon to a better location. Be sure to re-lock it again afterwards so that it won't move by accident!_
 
 ### In Party Chat:
 
