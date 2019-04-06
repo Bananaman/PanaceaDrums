@@ -1,13 +1,13 @@
-local ccDrums = ccDrums
+local Panacea_Drums = Panacea_Drums
 
-ccDrums:ProvideVersion("$Rev: 29 $", "$Date: 2008-07-29 05:46:55 +0200 (Di, 29 Jul 2008) $")
+Panacea_Drums:ProvideVersion("$Rev: 29 $", "$Date: 2008-07-29 05:46:55 +0200 (Di, 29 Jul 2008) $")
 
-function ccDrums:CreateFlashFrame()
+function Panacea_Drums:CreateFlashFrame()
 	if self.flashFrame then
 		return self.flashFrame
 	end
 
-	local f = CreateFrame("Frame", "ccDrumsFlashFlame", UIParent)
+	local f = CreateFrame("Frame", "Panacea_DrumsFlashFlame", UIParent)
 	f:SetAlpha(0)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetWidth(self.db.profile.flashsize)
@@ -24,9 +24,9 @@ function ccDrums:CreateFlashFrame()
 
 	f.DoFlash = function(self)
 		self:SetScript("OnUpdate", function()
-			self:SetAlpha(self:GetAlpha() + self.fadeDirection * ccDrums.db.profile.flashspeed)
-			if self:GetAlpha() >= ccDrums.db.profile.maxflashalpha and self.fadeDirection > 0 then
-				self:SetAlpha(ccDrums.db.profile.maxflashalpha)
+			self:SetAlpha(self:GetAlpha() + self.fadeDirection * Panacea_Drums.db.profile.flashspeed)
+			if self:GetAlpha() >= Panacea_Drums.db.profile.maxflashalpha and self.fadeDirection > 0 then
+				self:SetAlpha(Panacea_Drums.db.profile.maxflashalpha)
 				self.fadeDirection = -self.fadeDirection
 			elseif self:GetAlpha() <= 0 and self.fadeDirection < 0 then
 				self:SetAlpha(0)
@@ -41,7 +41,7 @@ function ccDrums:CreateFlashFrame()
 	return f
 end
 
-function ccDrums:FlashDrum(drum)
+function Panacea_Drums:FlashDrum(drum)
 	if not self.flashFrame then self:CreateFlashFrame() end
 
 	self.flashFrame.texture:SetTexture(drum.texture)

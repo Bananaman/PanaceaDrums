@@ -1,6 +1,6 @@
-local ccDrums = ccDrums
+local Panacea_Drums = Panacea_Drums
 
-ccDrums:ProvideVersion("$Rev: 33 $", "$Date: 2008-07-29 10:35:09 +0200 (Di, 29 Jul 2008) $")
+Panacea_Drums:ProvideVersion("$Rev: 33 $", "$Date: 2008-07-29 10:35:09 +0200 (Di, 29 Jul 2008) $")
 
 local table_insert = table.insert
 local table_remove = table.remove
@@ -11,13 +11,13 @@ local localization = (GetLocale() == "deDE") and {
 	
 } or {}
 
-local L = ccDrums:L("ccDrums-Options", localization)
+local L = Panacea_Drums:L("Panacea_Drums-Options", localization)
 
-ccDrums.options = {
+Panacea_Drums.options = {
 	type = "group",
-	name = L["ccDrums"],
+	name = L["Panacea_Drums"],
 	desc = L["Frees your ActionBars of Drums and also allows for Party/Raid Synchronization."],
-	handler = ccDrums,
+	handler = Panacea_Drums,
 	icon = [[Interface\Icons\INV_MISC_Drum_01]],
 	args = {
 		lock = {
@@ -26,12 +26,12 @@ ccDrums.options = {
 			desc = L["Locks/Unlocks the Action Buttons"],
 			order = 1,
 			get = function()
-				return ccDrums.db.profile.locked
+				return Panacea_Drums.db.profile.locked
 			end,
 			set = function(value)
-				ccDrums.db.profile.locked = value
-				for k, v in pairs(ccDrums.frames) do
-					if ccDrums.db.profile.locked then
+				Panacea_Drums.db.profile.locked = value
+				for k, v in pairs(Panacea_Drums.frames) do
+					if Panacea_Drums.db.profile.locked then
 						v:Lock()
 					else
 						v:Unlock()
@@ -45,14 +45,14 @@ ccDrums.options = {
 			desc = L["Layouts are used to modify the appearance"],
 			order = 2,
 			get = function()
-				return ccDrums.db.profile.layout
+				return Panacea_Drums.db.profile.layout
 			end,
 			set = function(v)
-				ccDrums:SwitchLayout(v)
+				Panacea_Drums:SwitchLayout(v)
 			end,
 			choices = function()
 				local t = {}
-				for k,v in pairs(ccDrums.Layouts) do
+				for k,v in pairs(Panacea_Drums.Layouts) do
 					table_insert(t,v.name)
 				end
 				return t
@@ -64,16 +64,16 @@ ccDrums.options = {
 			desc = L["Sets the Drums which the Addon shows"],
 			order = 3,
 			get = function()
-				local itemname = select(1,GetItemInfo(ccDrums.db.profile.drumwatched))
+				local itemname = select(1,GetItemInfo(Panacea_Drums.db.profile.drumwatched))
 				return itemname
 			end,
 			set = function(val)
-				for k,v in pairs(ccDrums.Drums) do
+				for k,v in pairs(Panacea_Drums.Drums) do
 					local itemname = select(1,GetItemInfo(v.item))
 					if itemname == val then
-						ccDrums.db.profile.drumwatched = v.item
+						Panacea_Drums.db.profile.drumwatched = v.item
 						
-						for kf,vf in pairs(ccDrums.frames) do
+						for kf,vf in pairs(Panacea_Drums.frames) do
 							vf.mainframe:SetAttribute("item", "item:"..v.item)
 							vf:SetIcon(v.texture)
 						end
@@ -84,7 +84,7 @@ ccDrums.options = {
 			end,
 			choices = function()
 				local t = {}
-				for k,v in pairs(ccDrums.Drums) do
+				for k,v in pairs(Panacea_Drums.Drums) do
 					local itemname = select(1, GetItemInfo(v.item))
 					table_insert(t,itemname)
 				end
@@ -97,10 +97,10 @@ ccDrums.options = {
 			desc = L["Announces your drums in Party Chat"],
 			order = 4,
 			get = function()
-				return ccDrums.db.profile.announceparty
+				return Panacea_Drums.db.profile.announceparty
 			end,
 			set = function(value)
-				ccDrums.db.profile.announceparty = value
+				Panacea_Drums.db.profile.announceparty = value
 			end,
 		},
 		screenflash = {
@@ -109,16 +109,16 @@ ccDrums.options = {
 			desc = L["Activates the Screen Flash feature when your drum cooldown is ready"],
 			order = 5,
 			get = function()
-				return ccDrums.db.profile.screenflash
+				return Panacea_Drums.db.profile.screenflash
 			end,
 			set = function(value)
-				ccDrums.db.profile.screenflash = value
+				Panacea_Drums.db.profile.screenflash = value
 			end,
 		},
 		appearance = {
 			type = "group",
 			name = L["Look'n'Feel"],
-			desc = L["Defines the Look'n'Feel of ccDrums."],
+			desc = L["Defines the Look'n'Feel of Panacea_Drums."],
 			order = 1,
 			args = {
 				scale = {
@@ -127,13 +127,13 @@ ccDrums.options = {
 						type = 'number',
 						order = 1,
 						get = function()
-							return ccDrums.db.profile.scale * 100
+							return Panacea_Drums.db.profile.scale * 100
 						end,
 						set = function(value)
-							ccDrums.db.profile.scale = value / 100
-							for k, v in pairs(ccDrums.frames) do
-								v.anchor:SetScale(ccDrums.db.profile.scale)
-								v.mainframe:SetScale(ccDrums.db.profile.scale)
+							Panacea_Drums.db.profile.scale = value / 100
+							for k, v in pairs(Panacea_Drums.frames) do
+								v.anchor:SetScale(Panacea_Drums.db.profile.scale)
+								v.mainframe:SetScale(Panacea_Drums.db.profile.scale)
 							end
 						end,
 						min = 1,	-- 1% Minimum
@@ -153,13 +153,13 @@ ccDrums.options = {
 								type = 'number',
 								order = 1,
 								get = function()
-									local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 									return settings.fonts.toptextsize
 								end,
 								set = function(value)
-									local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 									settings.fonts.toptextsize = value
-									for k, v in pairs(ccDrums.frames) do
+									for k, v in pairs(Panacea_Drums.frames) do
 										v.toptext:SetFont(settings.fonts.toptext, value, "OUTLINE");
 									end
 								end,
@@ -173,7 +173,7 @@ ccDrums.options = {
 							desc = L["What font to use."],
 							order = 2,
 							get = function()
-								local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 								for k, v in pairs(SharedMedia:HashTable("font")) do
 									if v == settings.fonts.toptext then
 										return k
@@ -182,9 +182,9 @@ ccDrums.options = {
 								return settings.fonts.toptext
 							end,
 							set = function(v)
-								local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 								settings.fonts.toptext = SharedMedia:Fetch("font", v)
-								for k, v in pairs(ccDrums.frames) do
+								for k, v in pairs(Panacea_Drums.frames) do
 									v.toptext:SetFont(settings.fonts.toptext, settings.fonts.toptextsize, "OUTLINE");
 								end
 							end,
@@ -206,13 +206,13 @@ ccDrums.options = {
 								type = 'number',
 								order = 1,
 								get = function()
-									local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 									return settings.fonts.centertextsize
 								end,
 								set = function(value)
-									local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 									settings.fonts.centertextsize = value
-									for k, v in pairs(ccDrums.frames) do
+									for k, v in pairs(Panacea_Drums.frames) do
 										v.centertext:SetFont(settings.fonts.centertext, value, "OUTLINE");
 									end
 								end,
@@ -226,7 +226,7 @@ ccDrums.options = {
 							desc = L["What font to use."],
 							order = 2,
 							get = function()
-								local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 								for k, v in pairs(SharedMedia:HashTable("font")) do
 									if v == settings.fonts.centertext then
 										return k
@@ -235,9 +235,9 @@ ccDrums.options = {
 								return settings.fonts.centertext
 							end,
 							set = function(v)
-								local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 								settings.fonts.centertext = SharedMedia:Fetch("font", v)
-								for k, v in pairs(ccDrums.frames) do
+								for k, v in pairs(Panacea_Drums.frames) do
 									v.centertext:SetFont(settings.fonts.centertext, settings.fonts.centertextsize, "OUTLINE");
 								end
 							end,
@@ -259,13 +259,13 @@ ccDrums.options = {
 								type = 'number',
 								order = 1,
 								get = function()
-									local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 									return settings.fonts.bottomtextsize
 								end,
 								set = function(value)
-									local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+									local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 									settings.fonts.bottomtextsize = value
-									for k, v in pairs(ccDrums.frames) do
+									for k, v in pairs(Panacea_Drums.frames) do
 										v.bottomtext:SetFont(settings.fonts.bottomtext, value, "OUTLINE");
 									end
 								end,
@@ -279,7 +279,7 @@ ccDrums.options = {
 							desc = L["What font to use."],
 							order = 2,
 							get = function()
-								local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 								for k, v in pairs(SharedMedia:HashTable("font")) do
 									if v == settings.fonts.bottomtext then
 										return k
@@ -288,9 +288,9 @@ ccDrums.options = {
 								return settings.fonts.bottomtext
 							end,
 							set = function(v)
-								local settings = ccDrums:GetLayoutNamespace(ccDrums.db.profile.layout)
+								local settings = Panacea_Drums:GetLayoutNamespace(Panacea_Drums.db.profile.layout)
 								settings.fonts.bottomtext = SharedMedia:Fetch("font", v)
-								for k, v in pairs(ccDrums.frames) do
+								for k, v in pairs(Panacea_Drums.frames) do
 									v.bottomtext:SetFont(settings.fonts.bottomtext, settings.fonts.bottomtextsize, "OUTLINE");
 								end
 							end,
@@ -312,13 +312,13 @@ ccDrums.options = {
 								type = 'number',
 								order = 1,
 								get = function()
-									return ccDrums.db.profile.flashsize
+									return Panacea_Drums.db.profile.flashsize
 								end,
 								set = function(value)
-									ccDrums.db.profile.flashsize = value
-									if ccDrums.flashFrame then
-										ccDrums.flashFrame:SetWidth(value)
-										ccDrums.flashFrame:SetHeight(value)
+									Panacea_Drums.db.profile.flashsize = value
+									if Panacea_Drums.flashFrame then
+										Panacea_Drums.flashFrame:SetWidth(value)
+										Panacea_Drums.flashFrame:SetHeight(value)
 									end
 								end,
 								min = 50,
@@ -331,10 +331,10 @@ ccDrums.options = {
 								type = 'number',
 								order = 2,
 								get = function()
-									return ccDrums.db.profile.flashspeed * 100
+									return Panacea_Drums.db.profile.flashspeed * 100
 								end,
 								set = function(value)
-									ccDrums.db.profile.flashspeed = value / 100
+									Panacea_Drums.db.profile.flashspeed = value / 100
 								end,
 								min = 1,
 								max = 30,
@@ -346,10 +346,10 @@ ccDrums.options = {
 								type = 'number',
 								order = 3,
 								get = function()
-									return ccDrums.db.profile.maxflashalpha * 100
+									return Panacea_Drums.db.profile.maxflashalpha * 100
 								end,
 								set = function(value)
-									ccDrums.db.profile.maxflashalpha = value / 100
+									Panacea_Drums.db.profile.maxflashalpha = value / 100
 								end,
 								min = 10,
 								max = 100,
@@ -367,7 +367,7 @@ ccDrums.options = {
 			args = function()
 				local t = {}
 
-				for k,v in pairs(ccDrums.Layouts) do
+				for k,v in pairs(Panacea_Drums.Layouts) do
 					if v.OptionsTable then
 						table_insert(t, {
 							type="group",

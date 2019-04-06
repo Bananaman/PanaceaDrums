@@ -1,6 +1,6 @@
-local ccDrums = ccDrums
+local Panacea_Drums = Panacea_Drums
 
-ccDrums:ProvideVersion("$Rev: 26 $", "$Date: 2008-07-28 01:44:15 +0200 (Mo, 28 Jul 2008) $")
+Panacea_Drums:ProvideVersion("$Rev: 26 $", "$Date: 2008-07-28 01:44:15 +0200 (Mo, 28 Jul 2008) $")
 
 local SharedMedia = Rock("LibSharedMedia-3.0")
 
@@ -15,9 +15,9 @@ local Layout = {
 local drummers = {}
 
 function Layout:Drummed(drum, drummer)
-	if ccDrums:GetDrumWatched() ~= drum.item then return end
+	if Panacea_Drums:GetDrumWatched() ~= drum.item then return end
 
-	if ccDrums:UnitInRaid(drummer) then
+	if Panacea_Drums:UnitInRaid(drummer) then
 		if drummer:match("player") or drummer:match("party") then
 			for i=1,GetNumRaidMembers(),1 do
 				if UnitName("raid"..i) == UnitName(drummer) then
@@ -63,7 +63,7 @@ end
 
 function Layout:OnInitialize()
 	-- Get Settings
-	self.settings = ccDrums:GetLayoutNamespace(self)
+	self.settings = Panacea_Drums:GetLayoutNamespace(self)
 
 	if not self.settings.fonts then
 		self.settings.fonts = {}
@@ -95,7 +95,7 @@ function Layout:Load()
 	-- Set up Frame
 	local last = nil
 	for i=1,5,1 do
-		local drum = ccDrums:GetSingleFrame("RaidDrums"..i)
+		local drum = Panacea_Drums:GetSingleFrame("RaidDrums"..i)
 		table_insert(self.frames, drum)
 
 		drum:LoadPos()
@@ -106,10 +106,10 @@ end
 
 function Layout:Unload()
 	for k, v in pairs(self.frames) do
-		ccDrums:ReleaseFrame(v)
+		Panacea_Drums:ReleaseFrame(v)
 	end
 
 	self.frames = {}
 end
 
-ccDrums:RegisterLayout(Layout)
+Panacea_Drums:RegisterLayout(Layout)

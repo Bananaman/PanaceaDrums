@@ -1,23 +1,23 @@
-local ccDrums = ccDrums
+local Panacea_Drums = Panacea_Drums
 
-ccDrums:ProvideVersion("$Rev: 32 $", "$Date: 2008-07-29 09:00:27 +0200 (Di, 29 Jul 2008) $")
+Panacea_Drums:ProvideVersion("$Rev: 32 $", "$Date: 2008-07-29 09:00:27 +0200 (Di, 29 Jul 2008) $")
 
 local table_insert = table.insert
 local table_remove = table.remove
 local CreateFrame = CreateFrame
 
-ccDrums.frames = {}
-ccDrums.frame_cache = {}
+Panacea_Drums.frames = {}
+Panacea_Drums.frame_cache = {}
 
-function ccDrums:CreateSingleFrame(framename)
+function Panacea_Drums:CreateSingleFrame(framename)
 	local Drum = {}
 
 	if not framename then
-		framename = "ccDrumsFrame" .. (getn(self.frames) + getn(self.frame_cache))
+		framename = "Panacea_DrumsFrame" .. (getn(self.frames) + getn(self.frame_cache))
 	end
 	local framesize = 40
 
-	local Layout = ccDrums.Layout
+	local Layout = Panacea_Drums.Layout
 
 	local object
 
@@ -152,11 +152,11 @@ function ccDrums:CreateSingleFrame(framename)
 	end
 
 	Drum.SavePos = function(self)
-		local Layout = ccDrums.Layout
+		local Layout = Panacea_Drums.Layout
 		local posname = Drum.name
 
 		if not Layout.settings then
-			Layout.settings = ccDrums:GetLayoutNamespace(Layout)
+			Layout.settings = Panacea_Drums:GetLayoutNamespace(Layout)
 		end
 
 		if not Layout.settings.frameposition then
@@ -177,9 +177,9 @@ function ccDrums:CreateSingleFrame(framename)
 	Drum.LoadPos = function(self)
 		local posname = Drum.name
 
-		local Layout = ccDrums.Layout
+		local Layout = Panacea_Drums.Layout
 		if not Layout.settings then
-			Layout.settings = ccDrums:GetLayoutNamespace(Layout)
+			Layout.settings = Panacea_Drums:GetLayoutNamespace(Layout)
 		end
 
 		if not Layout.settings.frameposition then
@@ -224,7 +224,7 @@ function ccDrums:CreateSingleFrame(framename)
 					local tex = "Ready"
 
 					if durcd <= 0 then
-						ccDrums:DrumCDFinished(drums)
+						Panacea_Drums:DrumCDFinished(drums)
 						self.CD = nil
 					else
 						tex = ""
@@ -242,7 +242,7 @@ function ccDrums:CreateSingleFrame(framename)
 				if dur <= 0 then
 					self.centertext:SetText("Next")
 					if not self.faded then
-						ccDrums:DrumsFaded(drums, drummer)
+						Panacea_Drums:DrumsFaded(drums, drummer)
 						self.faded = true
 					end
 					dur = 0
@@ -272,7 +272,7 @@ function ccDrums:CreateSingleFrame(framename)
 					local vcenter = (top+bottom)/2
 					local hcenter = (left+right)/2					
 
-					for k, v in pairs(ccDrums.frames) do
+					for k, v in pairs(Panacea_Drums.frames) do
 						local anchor = v.anchor
 
 						if anchor:GetLeft() - right <= 5 and anchor:GetLeft() - right >= -5 and vcenter < anchor:GetTop() and vcenter > anchor:GetBottom() then
@@ -315,7 +315,7 @@ function ccDrums:CreateSingleFrame(framename)
 	return Drum
 end
 
-function ccDrums:ResetFrame(Drum)
+function Panacea_Drums:ResetFrame(Drum)
 	Drum.anchortext:SetText("Drag")
 	Drum.centertext:SetText("Next")
 	Drum.anchor:Hide()
@@ -324,13 +324,13 @@ function ccDrums:ResetFrame(Drum)
 	Drum.mainframe:SetAttribute("type", "item")
 	Drum.mainframe:SetAttribute("item", "item:"..self:GetDrumWatched())
 
-	Drum:SetIcon(ccDrums:GetDrumByItemID(self:GetDrumWatched()).texture)
+	Drum:SetIcon(Panacea_Drums:GetDrumByItemID(self:GetDrumWatched()).texture)
 
 	Drum:LoadPos()
 end
 
-function ccDrums:GetSingleFrame(framename)
-	if getn(ccDrums.frame_cache) == 0 then
+function Panacea_Drums:GetSingleFrame(framename)
+	if getn(Panacea_Drums.frame_cache) == 0 then
 		self:CreateSingleFrame()
 	end
 
@@ -346,7 +346,7 @@ function ccDrums:GetSingleFrame(framename)
 	return frame
 end
 
-function ccDrums:ReleaseFrame(frame)
+function Panacea_Drums:ReleaseFrame(frame)
 	for k,v in pairs(self.frames) do
 		if v.anchor:GetName() == frame.anchor:GetName() then
 			table_remove(self.frames, k)
@@ -354,7 +354,7 @@ function ccDrums:ReleaseFrame(frame)
 		end
 	end
 
-	ccDrums:ResetFrame(frame)
+	Panacea_Drums:ResetFrame(frame)
 
 	table_insert(self.frame_cache, frame)
 end

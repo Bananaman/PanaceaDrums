@@ -1,6 +1,6 @@
-local ccDrums = ccDrums
+local Panacea_Drums = Panacea_Drums
 
-ccDrums:ProvideVersion("$Rev: 29 $", "$Date: 2008-07-29 05:46:55 +0200 (Di, 29 Jul 2008) $")
+Panacea_Drums:ProvideVersion("$Rev: 29 $", "$Date: 2008-07-29 05:46:55 +0200 (Di, 29 Jul 2008) $")
 
 local Drums = {
 	battle = {
@@ -47,9 +47,9 @@ local Drums = {
 	}
 }
 
-ccDrums.Drums = Drums
+Panacea_Drums.Drums = Drums
 
-function ccDrums:GetDrumByName(name)
+function Panacea_Drums:GetDrumByName(name)
 	for k,v in pairs(self.Drums) do
 		local itemname = GetItemInfo(v.item)
 		if name:match(itemname) then
@@ -60,7 +60,7 @@ function ccDrums:GetDrumByName(name)
 	return nil
 end
 
-function ccDrums:GetDrumByItemID(id)
+function Panacea_Drums:GetDrumByItemID(id)
 	for k,v in pairs(self.Drums) do
 		if v.item == id then
 			return v
@@ -70,7 +70,7 @@ function ccDrums:GetDrumByItemID(id)
 	return nil
 end
 
-function ccDrums:GetDrumBySpellID(id)
+function Panacea_Drums:GetDrumBySpellID(id)
 	for k,v in pairs(self.Drums) do
 		if v.spell == id then
 			return v
