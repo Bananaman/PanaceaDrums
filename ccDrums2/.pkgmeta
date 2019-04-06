@@ -1,0 +1,7 @@
+externals:
+    libs/LibRock-1.0: http://svn.wowace.com/wowace/trunk/LibRock-1.0
+    libs/LibRockConfig-1.0: http://svn.wowace.com/wowace/trunk/LibRockConfig-1.0
+    libs/LibRockConsole-1.0: http://svn.wowace.com/wowace/trunk/LibRockConsole-1.0
+    libs/LibRockDB-1.0: http://svn.wowace.com/wowace/trunk/LibRockDB-1.0
+    libs/LibRockEvent-1.0: http://svn.wowace.com/wowace/trunk/LibRockEvent-1.0
+    libs/LibSharedMedia-3.0: http://svn.wowace.com/wowace/trunk/LibSharedMedia-3.0
