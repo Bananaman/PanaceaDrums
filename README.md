@@ -2,7 +2,7 @@
 
 This addon was based on [ccDrums](https://www.wowinterface.com/downloads/info9801-ccDrums.html) by ccKep, which was then slightly modified by Tsunadee from the WoW guild Panacea.
 
-Requires World of Warcraft - The Burning Crusade! (TBC 2.4.6)
+Requires World of Warcraft - The Burning Crusade! (TBC 2.4.3)
 
 **Download: [PanaceaDrums-master.zip](https://github.com/VideoPlayerCode/PanaceaDrums/archive/master.zip)** (Put the inner "Panacea_Drums" folder into your WoW's "Interface/AddOns" folder.)
 
